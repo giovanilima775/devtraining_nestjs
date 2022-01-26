@@ -1,7 +1,7 @@
 - nest usa decoretors e em cima dos controlers vai ter um decorator que fala que a classe é um @controller
 - o services são injetados nos  controllers mas para isso é preciso colocar um decorator no service @injectable
 - para receber parametros é preciso usar decorators {@Body, @Param, @Query, @Headers}
-- quando quiser mudar o id de retorno usar o decorator {@HttpCode(HttpStatus.NO_CONTENT)}
+- quando quiser mudar o status de retorno usar o decorator {@HttpCode(HttpStatus.NO_CONTENT)}
 - também é possivel mudar os status code utilizando o decorator {@Res() response} e  retornando o dado como no express
 - se precisar pegar dados da url, body,... no metodo utilizar os decorators { @Param('id') id: string, @Body() body}
 
@@ -13,6 +13,24 @@
 - para usar decorators de validação no DTO é preciso instalar {npm i class-validator class-transformer} apos 
 instalado será necessario importalo no arquivo main e addcionar o coidigo {app.useGlobalPipes(new ValidationPipe());} para utilziar  vá  até o dto e coloque  os decorators sobre os atibutos {@IsString, @IsIn(['beginner', 'intermediate', 'advanced']) ...}
 - instalando mapped types é possivel extender os DTOs {export class UpdateCourseDto extends PartialType(CreateCourseDto) {} }
+- passando sicronized como true na hora de importar o typeorm no app.module a entidade gera a tabela no banco de dados
+TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres',
+      password: 'root',
+      database: 'nestjs',
+      autoLoadEntities: true,
+      synchronize: true,
+    } 
+- dentro do modulo importar as entidades que quer usar { imports: [TypeOrmModule.forFeature([Course])], }
+- o nest executa a criação das tabelas automaticamente
+- para manipual os dados da entidade é preciso injetar a entidade no construtor do service 
+- ...variavel = spreadoperator
+- parte de autenticação basta acessar a documentação na parte de security
+
+
 
 nest g controller {name}
 nest g controller {folder/name} --dry-run

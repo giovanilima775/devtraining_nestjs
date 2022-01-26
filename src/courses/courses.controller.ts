@@ -19,8 +19,8 @@ export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
   @Get('')
-  findAll(@Res() response) {
-    const courses = this.coursesService.findAll();
+  async findAll(@Res() response) {
+    const courses = await this.coursesService.findAll();
     return response.status(200).json(courses);
   }
 
