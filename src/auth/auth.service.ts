@@ -17,8 +17,14 @@ export class AuthService {
       sub: user.id,
     };
 
+    const refresh_token = this.jwtService.sign(
+      { payload },
+      { expiresIn: '1d' },
+    );
+
     return {
       access_token: this.jwtService.sign(payload),
+      refresh_token,
     };
   }
 
@@ -38,5 +44,18 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  async refreshToken(token: string): Promise<any> {
+    const auth_secret = process.env.JWT_SECRET_KEY;
+
+    const verify = this.jwtService.verify(token, { secret: auth_secret });
+    if (!verify) throw Error('Invalid refresh token');
+
+    const id = verify.payload.sub;
+    const user = await this.usersService.findOne(id);
+    const auth = await this.login({ id: user.id, email: user.email });
+
+    return auth;
   }
 }
